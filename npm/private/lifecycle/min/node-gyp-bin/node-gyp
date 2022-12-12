@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
-if [ "x$npm_config_node_gyp" = "x" ]; then
-  node "`dirname "$0"`/../../node_modules/node-gyp/bin/node-gyp.js" "$@"
-else
-  "$npm_config_node_gyp" "$@"
-fi
+export npm_globals="$(npm list -g | head -1)"
+node "$npm_globals/usr/local/lib/node_modules/node-gyp/bin/node-gyp.js" "$@"
+#if [ "x$npm_config_node_gyp" = "x" ]; then
+#  node "`dirname "$0"`/../../node_modules/node-gyp/bin/node-gyp.js" "$@"
+#else
+#  "$npm_config_node_gyp" "$@"
+#fi
