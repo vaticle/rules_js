@@ -1,14 +1,12 @@
 #!/usr/bin/env sh
-npm_globals="$(npm list -g | head -1)"
-node_gyp_script="$npm_globals/usr/local/lib/node_modules/node-gyp/bin/node-gyp.js"
+node_gyp_script="/usr/local/lib/node_modules/node-gyp/bin/node-gyp.js"
 if test -f "$node_gyp_script"; then
-  node "$npm_globals/usr/local/lib/node_modules/node-gyp/bin/node-gyp.js" "$@"
+  node "$node_gyp_script" "$@"
 else
-  echo "Could not locate node-gyp. Please install it globally by running: npm i -g node-gyp"
-  exit 1
+  echo "Could not locate node-gyp. If building on Mac, install it globally by running: npm i -g node-gyp"
+  if [ "x$npm_config_node_gyp" = "x" ]; then
+    node "`dirname "$0"`/../../node_modules/node-gyp/bin/node-gyp.js" "$@"
+  else
+    "$npm_config_node_gyp" "$@"
+  fi
 fi
-#if [ "x$npm_config_node_gyp" = "x" ]; then
-#  node "`dirname "$0"`/../../node_modules/node-gyp/bin/node-gyp.js" "$@"
-#else
-#  "$npm_config_node_gyp" "$@"
-#fi
